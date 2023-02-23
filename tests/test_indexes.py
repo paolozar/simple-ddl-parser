@@ -919,3 +919,52 @@ def test_indexes_in_table():
         }
     ]
     assert expected == parse_results
+
+
+def test_indexes_in_table():
+    parse_results = DDLParser(
+        """
+    CREATE TABLE IF NOT EXISTS testindextable(id int);
+    CREATE INDEX IF NOT EXISTS testindex ON testindextable(id); 
+    """
+    ).run()
+    expected = [
+        {
+            'columns': [
+                {
+                    'name': 'id',
+                    'type': 'int',
+                    'size': None,
+                    'references': None,
+                    'unique': False,
+                    'nullable': True,
+                    'default': None,
+                    'check': None
+                }
+            ],
+            'primary_key': [],
+            'alter': {},
+            'checks': [],
+            'index': [
+                {
+                    'index_name': 'testindex',
+                    'unique': False,
+                    'detailed_columns': [
+                        {
+                            'name': 'id',
+                            'order': 'ASC',
+                            'nulls': 'LAST'
+                        }
+                    ],
+                    'columns': ['id'],
+                    'if_not_exists': True
+                }
+            ],
+            'partitioned_by': [],
+            'tablespace': None,
+            'schema': None, 
+            'table_name': 'testindextable',
+            'if_not_exists': True
+        }
+    ]
+    assert expected == parse_results

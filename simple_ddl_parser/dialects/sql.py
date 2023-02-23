@@ -764,6 +764,7 @@ class BaseSQL(
 
     def p_create_index(self, p: List) -> None:
         """create_index : CREATE INDEX id
+        | CREATE INDEX IF NOT EXISTS id
         | CREATE UNIQUE INDEX id
         | create_index ON id
         | CREATE CLUSTERED INDEX id
@@ -782,6 +783,7 @@ class BaseSQL(
                 "unique": "UNIQUE" in p_list,
                 "clustered": clustered,
             }
+        self.add_if_not_exists(p[0], p_list)
 
     def extract_check_data(self, p, p_list):
         if isinstance(p_list[-1]["check"], list):
