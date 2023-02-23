@@ -125,15 +125,21 @@ def set_alter_to_table_data(key: str, statement: Dict, target_table: Dict) -> Di
 
 def init_table_data() -> Dict:
     return {
+        "table_name": None,
+        "schema": None,
+        "partitioned_by": [],
+        "tablespace": None,
         "columns": [],
         "primary_key": None,
         "alter": {},
         "checks": [],
         "index": [],
-        "partitioned_by": [],
-        "tablespace": None,
     }
 
+def init_sequence_data() -> Dict:
+    return {
+        "sequence_name": None,
+    }
 
 def process_alter_and_index_result(
     tables_dict: Dict, table: Dict, output_mode: str
@@ -156,6 +162,10 @@ def process_entities(tables_dict: Dict, table: Dict, output_mode: str) -> Dict:
         table_data = d.populate_dialects_table_data(output_mode, table_data)
         table_data.update(table)
         table_data = set_unique_columns(table_data)
+    elif table.get("sequence_name"):
+        table_data = init_sequence_data()
+        table_data.update(table)
+        is_it_table = False
     else:
         table_data = table
         is_it_table = False
