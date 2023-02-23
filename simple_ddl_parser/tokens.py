@@ -89,6 +89,9 @@ after_columns_tokens = {
     "TEXTIMAGE_ON": "TEXTIMAGE_ON",
 }
 sequence_reserved = {
+    "IF": "IF",
+    "NOT": "NOT",
+    "EXISTS": "EXISTS",
     "INCREMENT": "INCREMENT",
     "START": "START",
     "MINVALUE": "MINVALUE",

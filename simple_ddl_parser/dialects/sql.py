@@ -1011,7 +1011,10 @@ class BaseSQL(
                 seq_name = p_list[-1]
         else:
             seq_name = p_list[-1]
-        p[0] = {"schema": schema, "sequence_name": seq_name}
+
+        p[0] = p[1]
+        p[0]["schema"] = schema
+        p[0]["sequence_name"] = seq_name
 
     def p_create_seq(self, p: List) -> None:
         """create_seq : CREATE SEQUENCE IF NOT EXISTS
@@ -1020,6 +1023,7 @@ class BaseSQL(
         """
         # get schema & table name
 
+        p[0] = {}
         self.add_if_not_exists(p[0], list(p))
 
     def p_tid(self, p: List) -> None:

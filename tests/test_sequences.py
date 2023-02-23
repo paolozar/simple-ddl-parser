@@ -167,3 +167,28 @@ def test_add_support_no_value():
         "types": [],
     }
     assert expected == result
+
+def test_if_not_exists():
+    parse_results = DDLParser(
+        """
+    CREATE SEQUENCE IF NOT EXISTS testsequence
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+    """
+    ).run()
+    expected = [
+        {
+            "schema": None,
+            "sequence_name": "testsequence",
+            "increment": 1,
+            "start": 1,
+            "minvalue": 1,
+            "maxvalue": 9223372036854775807,
+            "cache": 1,
+            "if_not_exists": True
+        }
+    ]
+    assert expected == parse_results
