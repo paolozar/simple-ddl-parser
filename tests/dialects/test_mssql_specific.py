@@ -686,6 +686,7 @@ def test_two_unique_constructs():
                     "references": [
                         {
                             "columns": ["PersonID"],
+                            "ref_columns": ["id"],
                             "constraint_name": "FK_Person_Age_under",
                             "deferrable_initially": None,
                             "on_delete": None,
@@ -1442,6 +1443,7 @@ def test_alter_unique():
                     "references": [
                         {
                             "columns": ["PersonID"],
+                            "ref_columns": ["id"],
                             "constraint_name": "FK_Person_Age_under",
                             "deferrable_initially": None,
                             "on_delete": None,
@@ -1682,6 +1684,7 @@ def test_defaults_in_alter():
                     "references": [
                         {
                             "columns": ["PersonID"],
+                            "ref_columns": ["id"],
                             "constraint_name": "FK_Person_Age_under",
                             "deferrable_initially": None,
                             "on_delete": None,

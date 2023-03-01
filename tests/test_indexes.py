@@ -265,6 +265,7 @@ def test_several_indexes_types():
                     "references": [
                         {
                             "columns": ["PersonID"],
+                            "ref_columns": ["id"],
                             "constraint_name": "FK_Person_Age_under",
                             "deferrable_initially": None,
                             "on_delete": None,
@@ -604,6 +605,7 @@ def test_clustered_index():
                     "references": [
                         {
                             "columns": ["PersonID"],
+                            "ref_columns": ["id"],
                             "constraint_name": "FK_Person_Age_under",
                             "deferrable_initially": None,
                             "on_delete": None,
@@ -967,4 +969,28 @@ def test_indexes_in_table():
             'if_not_exists': True
         }
     ]
+    assert expected == parse_results
+
+def test_ref_columns():
+    parse_results = DDLParser(
+        """
+        CREATE TABLE table1 (
+                table1_pk INT PRIMARY KEY
+        );
+        CREATE TABLE table2 (
+                table2_pk1 int,
+                table2_pk2 int,
+                PRIMARY KEY (table2_pk1, table2_pk2)
+        );
+        CREATE TABLE table3 (
+                table3_pk INT PRIMARY KEY,
+                table3_fk1 INT,
+                table3_fk2_1 INT,
+                table3_fk2_2 INT,
+                CONSTRAINT constr_table3_fk1 FOREIGN KEY (table3_fk1) REFERENCES table1(table1_pk),
+                CONSTRAINT constr_table3_fk2 FOREIGN KEY (table3_fk2_1,table3_fk2_2) REFERENCES table1(table2_pk1, table2_pk2)
+        );
+    """
+    ).run()
+    expected = [{'table_name': 'table1', 'schema': None, 'partitioned_by': [], 'tablespace': None, 'columns': [{'name': 'table1_pk', 'type': 'INT', 'size': None, 'references': None, 'unique': False, 'nullable': False, 'default': None, 'check': None}], 'primary_key': ['table1_pk'], 'alter': {}, 'checks': [], 'index': []}, {'table_name': 'table2', 'schema': None, 'partitioned_by': [], 'tablespace': None, 'columns': [{'name': 'table2_pk1', 'type': 'int', 'size': None, 'references': None, 'unique': False, 'nullable': False, 'default': None, 'check': None}, {'name': 'table2_pk2', 'type': 'int', 'size': None, 'references': None, 'unique': False, 'nullable': False, 'default': None, 'check': None}], 'primary_key': ['table2_pk1', 'table2_pk2'], 'alter': {}, 'checks': [], 'index': []}, {'table_name': 'table3', 'schema': None, 'partitioned_by': [], 'tablespace': None, 'columns': [{'name': 'table3_pk', 'type': 'INT', 'size': None, 'references': None, 'unique': False, 'nullable': False, 'default': None, 'check': None}, {'name': 'table3_fk1', 'type': 'INT', 'size': None, 'references': None, 'unique': False, 'nullable': True, 'default': None, 'check': None}, {'name': 'table3_fk2_1', 'type': 'INT', 'size': None, 'references': None, 'unique': False, 'nullable': True, 'default': None, 'check': None}, {'name': 'table3_fk2_2', 'type': 'INT', 'size': None, 'references': None, 'unique': False, 'nullable': True, 'default': None, 'check': None}], 'primary_key': ['table3_pk'], 'alter': {}, 'checks': [], 'index': [], 'constraints': {'references': [{'table': 'table1', 'columns': ['table1_pk'], 'schema': None, 'on_delete': None, 'on_update': None, 'deferrable_initially': None, 'ref_columns': ['table3_fk1'], 'constraint_name': 'constr_table3_fk1'}, {'table': 'table1', 'columns': ['table2_pk1', 'table2_pk2'], 'schema': None, 'on_delete': None, 'on_update': None, 'deferrable_initially': None, 'ref_columns': ['table3_fk2_1', 'table3_fk2_2'], 'constraint_name': 'constr_table3_fk2'}]}}]
     assert expected == parse_results

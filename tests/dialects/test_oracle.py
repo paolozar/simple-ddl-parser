@@ -486,6 +486,7 @@ CREATE TABLE order_items
                     "references": [
                         {
                             "columns": ["order_id"],
+                            "ref_columns": ["order_id"],
                             "constraint_name": "order_items_fk",
                             "deferrable_initially": None,
                             "on_delete": None,
@@ -677,6 +678,7 @@ def test_organization_index():
                                                            'child_criterion_id'],
                                                'constraint_name': 'pk_meta_criteria_combo'}],
                              'references': [{'columns': [None],
+                                             "ref_columns": ["parent_criterion_id"],
                                              'constraint_name': 'fk_metacritcombo_parent',
                                              'deferrable_initially': None,
                                              'on_delete': 'CASCADE',
@@ -684,6 +686,7 @@ def test_organization_index():
                                              'schema': None,
                                              'table': 'meta_criteria'},
                                             {'columns': [None],
+                                             "ref_columns": ["child_criterion_id"],
                                              'constraint_name': 'fk_metacritcombo_child',
                                              'deferrable_initially': None,
                                              'on_delete': None,

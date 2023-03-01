@@ -882,6 +882,8 @@ class BaseSQL(
 
     def add_ref_information_to_table(self, data, p_list):
         if len(p_list) > 4 and "constraint" in p_list[3]:
+            if isinstance(p_list[-2], list):
+                p_list[-1]["references"]["ref_columns"] = p_list[-2]
             data = self.set_constraint(
                 data,
                 "references",
