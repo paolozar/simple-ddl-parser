@@ -840,6 +840,8 @@ class BaseSQL(
 
         if isinstance(p_list[-1], dict):
             p[0] = self.process_constraints_and_refs(p[0], p_list)
+            if p[0].get("detailed_columns") and p[0].get("clustered_primary_key"):
+                del p[0]["detailed_columns"]
 
     def process_unique_and_primary_constraint(self, data: Dict, p_list: List) -> Dict:
         if p_list[-1].get("unique_statement"):
@@ -850,10 +852,14 @@ class BaseSQL(
                 p_list[-2]["constraint"]["name"],
             )
         else:
+            constraint = {"columns": p_list[-1]["primary_key"]}
+            if (p_list[-1].get("detailed_columns")):
+                constraint.update({"detailed_columns": p_list[-1]["detailed_columns"]})
+                del data["detailed_columns"]
             data = self.set_constraint(
                 data,
                 "primary_keys",
-                {"columns": p_list[-1]["primary_key"]},
+                constraint,
                 p_list[-2]["constraint"]["name"],
             )
         return data
@@ -1525,19 +1531,23 @@ class BaseSQL(
 
         p[0] = {}
 
+        order = None
+        column = None
+        for item in p_list[-1]:
+            if item.upper() not in ["ASC", "DESC"]:
+                column = item
+            else:
+                order = item
+            if column and order:
+                columns.append({"column": column, "order": order})
+                column = None
+                order = None
+
         if isinstance(p_list[2], str) and "CLUSTERED" == p_list[2]:
-            order = None
-            column = None
-            for item in p_list[-1]:
-                if item not in ["ASC", "DESC"]:
-                    column = item
-                else:
-                    order = item
-                if column and order:
-                    columns.append({"column": column, "order": order})
-                    column = None
-                    order = None
             p[0]["clustered_primary_key"] = columns
+        
+        if len(columns) > 0:
+            p[0]["detailed_columns"] = columns
 
         p[0] = self.process_order_in_pk(p[0], p_list)
 
@@ -1545,7 +1555,7 @@ class BaseSQL(
     def process_order_in_pk(data: Dict, p_list: List) -> Dict:
         columns = []
         for item in p_list[-1]:
-            if item not in ["ASC", "DESC"]:
+            if item.upper() not in ["ASC", "DESC"]:
                 columns.append(item)
         data["primary_key"] = columns
         return data

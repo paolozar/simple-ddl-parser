@@ -3162,3 +3162,108 @@ def test_non_int_type_paramteter():
              'tablespace': None}],
  'types': []}
     assert results == expected
+
+def test_primary_key_with_order():
+
+    results = DDLParser("""
+    CREATE TABLE testtable1 (
+    id1 int,
+    id2 int,
+    CONSTRAINT testtable1_pk PRIMARY KEY (id1 desc, id2 desc)
+    );
+
+    CREATE TABLE testtable2 (
+    id1 int,
+    id2 int,
+    PRIMARY KEY (id1 asc, id2 desc)
+    );
+
+    CREATE TABLE testtable3 (
+    id1 int,
+    id2 int,
+    PRIMARY KEY CLUSTERED (id1 desc, id2 asc)
+    );
+    """).run()
+    expected = [
+        {'table_name': 'testtable1',
+         'schema': None, 'partitioned_by': [],
+         'tablespace': None,
+         'columns': [
+             {'name': 'id1',
+              'type': 'int',
+              'size': None,
+              'references': None,
+              'unique': False,
+              'nullable': False,
+              'default': None,
+              'check': None},
+             {'name': 'id2',
+              'type': 'int',
+              'size': None,
+              'references': None,
+              'unique': False,
+              'nullable': False,
+              'default': None,
+              'check': None}],
+         'primary_key': ['id1', 'id2'],
+         'alter': {},
+         'checks': [],
+         'index': [],
+         'constraints': {
+             'primary_keys': [
+                 {'columns': ['id1', 'id2'],
+                  'detailed_columns': [{'column': 'id1', 'order': 'desc'}, {'column': 'id2', 'order': 'desc'}],
+                  'constraint_name': 'testtable1_pk'}]}},
+        {'table_name': 'testtable2',
+         'schema': None,
+         'partitioned_by': [],
+         'tablespace': None,
+         'columns': [
+             {'name': 'id1',
+              'type': 'int',
+              'size': None,
+              'references': None,
+              'unique': False,
+              'nullable': False,
+              'default': None,
+              'check': None},
+             {'name': 'id2',
+              'type': 'int',
+              'size': None,
+              'references': None,
+              'unique': False,
+              'nullable': False,
+              'default': None,
+              'check': None}],
+         'primary_key': ['id1', 'id2'],
+         'alter': {},
+         'checks': [],
+         'index': [],
+         'detailed_columns': [{'column': 'id1', 'order': 'asc'}, {'column': 'id2', 'order': 'desc'}]},
+        {'table_name': 'testtable3',
+         'schema': None,
+         'partitioned_by': [],
+         'tablespace': None,
+         'columns': [
+             {'name': 'id1',
+              'type': 'int',
+              'size': None,
+              'references': None,
+              'unique': False,
+              'nullable': False,
+              'default': None,
+              'check': None},
+             {'name': 'id2',
+              'type': 'int',
+              'size': None,
+              'references': None,
+              'unique': False,
+              'nullable': False,
+              'default': None,
+              'check': None}],
+         'primary_key': ['id1', 'id2'],
+         'alter': {},
+         'checks': [],
+         'index': [],
+         'clustered_primary_key': [{'column': 'id1', 'order': 'desc'}, {'column': 'id2', 'order': 'asc'}]}]
+    assert results == expected

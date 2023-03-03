@@ -1832,10 +1832,12 @@ def test_constraint_primary_key():
                     "primary_keys": [
                         {
                             "columns": ["[id]"],
+                            "detailed_columns": [{"column": "[id]", "order": "ASC"}],
                             "constraint_name": "[PK_users_WorkSchedule_id]",
                         },
                         {
                             "columns": ["[id]"],
+                            "detailed_columns": [{"column": "[id]", "order": "ASC"}],
                             "constraint_name": "[PK_users_WorkSchedule_id]",
                         },
                     ]
@@ -1972,6 +1974,7 @@ def test_constraint_with_with():
                     "primary_keys": [
                         {
                             "columns": ["[id]"],
+                            "detailed_columns": [{"column": "[id]", "order": "ASC"}],
                             "constraint_name": "[PK_users_WorkSchedule_id]",
                         }
                     ]
@@ -2072,6 +2075,7 @@ def test_with_on():
                     "primary_keys": [
                         {
                             "columns": ["[id]"],
+                            "detailed_columns": [{"column": "[id]", "order": "ASC"}],
                             "constraint_name": "[PK_users_WorkSchedule_id]",
                         }
                     ]
@@ -2213,6 +2217,7 @@ def test_period_for_system_time():
                     "primary_keys": [
                         {
                             "columns": ["[id]"],
+                            "detailed_columns": [{"column": "[id]", "order": "ASC"}],
                             "constraint_name": "[PK_users_WorkSchedule_id]",
                         }
                     ]
@@ -2337,6 +2342,7 @@ def test_on_primary_on_table_level():
                     "primary_keys": [
                         {
                             "columns": ["[id]"],
+                            "detailed_columns": [{"column": "[id]", "order": "ASC"}],
                             "constraint_name": "[PK_users_WorkSchedule_id]",
                         }
                     ]
@@ -2433,6 +2439,7 @@ def test_with_on_table_level():
                     "primary_keys": [
                         {
                             "columns": ["[id]"],
+                            "detailed_columns": [{"column": "[id]", "order": "ASC"}],
                             "constraint_name": "[PK_users_WorkSchedule_id]",
                         }
                     ]
@@ -2534,6 +2541,7 @@ SYSTEM_VERSIONING = ON ( HISTORY_TABLE = [dbo].[users_WorkScheduleHistory] )
                     "primary_keys": [
                         {
                             "columns": ["[id]"],
+                            "detailed_columns": [{"column": "[id]", "order": "ASC"}],
                             "constraint_name": "[PK_users_WorkSchedule_id]",
                         }
                     ]
@@ -2797,6 +2805,7 @@ GO"""
                     "primary_keys": [
                         {
                             "columns": ["[Request_ID]"],
+                            "detailed_columns": [{"column": "[Request_ID]", "order": "ASC"}],
                             "constraint_name": "[PK_TO_Requests_Request_ID]",
                         }
                     ]
@@ -2857,7 +2866,9 @@ GO"""
                 ],
                 "constraints": {
                     "primary_keys": [
-                        {"columns": ["[ID]"], "constraint_name": "[PK_ToDo_ID]"}
+                        {"columns": ["[ID]"],
+                         "detailed_columns": [{"column": "[ID]", "order": "ASC"}],
+                         "constraint_name": "[PK_ToDo_ID]"}
                     ]
                 },
                 "index": [],
@@ -2911,6 +2922,7 @@ GO"""
                     "primary_keys": [
                         {
                             "columns": ["[ToDoCommentsId]"],
+                            "detailed_columns": [{"column": "[ToDoCommentsId]", "order": "ASC"}],
                             "constraint_name": "[PK_ToDoComments_ToDoCommentsId]",
                         }
                     ]
