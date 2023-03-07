@@ -107,6 +107,8 @@ def set_default_columns_from_alter(statement: Dict, target_table: Dict) -> Dict:
 
 
 def set_unique_columns_from_alter(statement: Dict, target_table: Dict) -> Dict:
+    if len(statement["unique"]["columns"]) > 1:
+        return target_table
     for column in target_table["columns"]:
         for column_name in statement["unique"]["columns"]:
             if column["name"] == column_name:
@@ -246,6 +248,8 @@ def set_column_unique_param(table_data: Dict, key: str) -> Dict:
                 check_in = []
         else:
             check_in = table_data[key]
+        if len(check_in) > 1:
+            continue
         if column["name"] in check_in:
             column["unique"] = True
     return table_data

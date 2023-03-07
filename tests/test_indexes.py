@@ -7,12 +7,13 @@ def test_several_indexes_types():
     CREATE TABLE sqlserverlist (
 
     id INT IDENTITY (1,1) PRIMARY KEY, -- NOTE THE IDENTITY
-    company_id BIGINT ,
+    company_id BIGINT UNIQUE,
     primary_id INT FOREIGN KEY REFERENCES Persons(PersonID), -- ADD THIS COLUMN FOR THE FOREIGN KEY
     age TINYINT NULL UNIQUE,
     days_active SMALLINT NOT NULL,
     user_origin_of_birth char(255),
     user_account VARCHAR(8000) NOT NULL,
+    user_last_name VARCHAR(8000) NOT NULL,
     birth_date DATE NOT NULL,
     time_of_birth TIME(7),
     enrollment_date SMALLDATETIME,
@@ -143,6 +144,16 @@ def test_several_indexes_types():
                         "size": 8000,
                         "type": "VARCHAR",
                         "unique": False,
+                    },
+                    {
+                        'check': None,
+                        'default': None,
+                        'name': 'user_last_name',
+                        'nullable': False,
+                        'references': None,
+                        'size': 8000,
+                        'type': 'VARCHAR',
+                        'unique': False
                     },
                     {
                         "check": None,
@@ -349,12 +360,13 @@ def test_clustered_index():
    CREATE TABLE sqlserverlist (
 
    id INT IDENTITY (1,1) PRIMARY KEY, -- NOTE
-   company_id BIGINT ,
+   company_id BIGINT UNIQUE,
    primary_id INT FOREIGN KEY REFERENCES Persons(PersonID), -- ADD THIS COLUMN FOR THE FOREIGN KEY
    age TINYINT NULL UNIQUE,
    days_active SMALLINT NOT NULL,
    user_origin_of_birth char(255),
    user_account VARCHAR(8000) NOT NULL,
+   user_last_name VARCHAR(8000) NOT NULL,
    birth_date DATE NOT NULL,
    time_of_birth TIME(7),
    enrollment_date SMALLDATETIME,
@@ -478,6 +490,15 @@ def test_clustered_index():
                         "check": None,
                         "default": None,
                         "name": "user_account",
+                        "nullable": False,
+                        "references": None,
+                        "size": 8000,
+                        "type": "VARCHAR",
+                        "unique": False,
+                    },                    {
+                        "check": None,
+                        "default": None,
+                        "name": "user_last_name",
                         "nullable": False,
                         "references": None,
                         "size": 8000,

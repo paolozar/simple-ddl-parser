@@ -224,7 +224,7 @@ def test_constraint_unique():
                         "references": None,
                         "size": None,
                         "type": "BIGINT",
-                        "unique": True,
+                        "unique": False,
                     },
                     {
                         "check": None,
@@ -234,7 +234,7 @@ def test_constraint_unique():
                         "references": None,
                         "size": 8000,
                         "type": "VARBINARY",
-                        "unique": True,
+                        "unique": False,
                     },
                 ],
                 "index": [],
@@ -332,7 +332,7 @@ def test_two_unique_constructs():
     CREATE TABLE sqlserverlist (
 
     id INT IDENTITY (1,1) PRIMARY KEY, -- NOTE
-    company_id BIGINT ,
+    company_id BIGINT UNIQUE,
     primary_id INT FOREIGN KEY REFERENCES Persons(PersonID), -- ADD THIS COLUMN FOR THE FOREIGN KEY
     age TINYINT NULL UNIQUE,
     days_active SMALLINT NOT NULL,
@@ -483,7 +483,7 @@ def test_two_unique_constructs():
                         "references": None,
                         "size": 8000,
                         "type": "VARBINARY",
-                        "unique": True,
+                        "unique": False,
                     },
                     {
                         "check": None,
@@ -725,7 +725,7 @@ def test_foreign_keys():
    CREATE TABLE sqlserverlist (
 
    id INT IDENTITY (1,1) PRIMARY KEY, -- NOTE
-   company_id BIGINT ,
+   company_id BIGINT UNIQUE,
    primary_id INT FOREIGN KEY REFERENCES Persons(PersonID), -- ADD THIS COLUMN FOR THE FOREIGN KEY
    age TINYINT NULL UNIQUE,
    days_active SMALLINT NOT NULL,
@@ -885,7 +885,7 @@ def test_foreign_keys():
                         "references": None,
                         "size": 8000,
                         "type": "VARBINARY",
-                        "unique": True,
+                        "unique": False,
                     },
                     {
                         "check": None,
@@ -1071,7 +1071,7 @@ def test_alter_unique():
    CREATE TABLE sqlserverlist (
 
    id INT IDENTITY (1,1) PRIMARY KEY, -- NOTE
-   company_id BIGINT ,
+   company_id BIGINT UNIQUE,
    primary_id INT FOREIGN KEY REFERENCES Persons(PersonID), -- ADD THIS COLUMN FOR THE FOREIGN KEY
    age TINYINT NULL UNIQUE,
    days_active SMALLINT NOT NULL,
@@ -1240,7 +1240,7 @@ def test_alter_unique():
                         "references": None,
                         "size": 8000,
                         "type": "VARBINARY",
-                        "unique": True,
+                        "unique": False,
                     },
                     {
                         "check": None,
@@ -1310,7 +1310,7 @@ def test_alter_unique():
                         "references": None,
                         "size": (38, 20),
                         "type": "DECIMAL",
-                        "unique": True,
+                        "unique": False,
                     },
                     {
                         "check": None,
@@ -1370,7 +1370,7 @@ def test_alter_unique():
                         "references": None,
                         "size": 7,
                         "type": "DATETIME2",
-                        "unique": True,
+                        "unique": False,
                     },
                     {
                         "check": None,
@@ -1478,12 +1478,13 @@ def test_defaults_in_alter():
     CREATE TABLE sqlserverlist (
 
     id INT IDENTITY (1,1) PRIMARY KEY, -- NOTE
-    company_id BIGINT ,
+    company_id BIGINT UNIQUE,
     primary_id INT FOREIGN KEY REFERENCES Persons(PersonID), -- ADD THIS COLUMN FOR THE FOREIGN KEY
     age TINYINT NULL UNIQUE,
     days_active SMALLINT NOT NULL,
     user_origin_of_birth char(255),
     user_account VARCHAR(8000) NOT NULL,
+    user_last_name VARCHAR(8000) NOT NULL,
     user_time_zone DATETIMEOFFSET(7),
     oder_date date DEFAULT GETDATE(), -- added to demonstrate sql sever Defaults
     country varchar(255) DEFAULT 'Sandnes', -- added to demonstrate sql sever Defaults
@@ -1607,6 +1608,16 @@ def test_defaults_in_alter():
                         "check": None,
                         "default": None,
                         "name": "user_account",
+                        "nullable": False,
+                        "references": None,
+                        "size": 8000,
+                        "type": "VARCHAR",
+                        "unique": False,
+                    },
+                    {
+                        "check": None,
+                        "default": None,
+                        "name": "user_last_name",
                         "nullable": False,
                         "references": None,
                         "size": 8000,
