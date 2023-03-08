@@ -88,7 +88,6 @@ def add_alter_to_table(tables_dict: Dict, statement: Dict) -> Dict:
         target_table["alter"]["checks"].append(statement["check"])
     elif "unique" in statement:
         target_table = set_alter_to_table_data("unique", statement, target_table)
-        target_table = set_unique_columns_from_alter(statement, target_table)
     elif "default" in statement:
         target_table = set_alter_to_table_data("default", statement, target_table)
         target_table = set_default_columns_from_alter(statement, target_table)
@@ -103,14 +102,6 @@ def set_default_columns_from_alter(statement: Dict, target_table: Dict) -> Dict:
             for column_name in statement["default"]["columns"]:
                 if column["name"] == column_name:
                     column["default"] = statement["default"]["value"]
-    return target_table
-
-
-def set_unique_columns_from_alter(statement: Dict, target_table: Dict) -> Dict:
-    for column in target_table["columns"]:
-        for column_name in statement["unique"]["columns"]:
-            if column["name"] == column_name:
-                column["unique"] = True
     return target_table
 
 
@@ -161,7 +152,6 @@ def process_entities(tables_dict: Dict, table: Dict, output_mode: str) -> Dict:
         table_data = init_table_data()
         table_data = d.populate_dialects_table_data(output_mode, table_data)
         table_data.update(table)
-        table_data = set_unique_columns(table_data)
     elif table.get("sequence_name"):
         table_data = init_sequence_data()
         table_data.update(table)
@@ -212,9 +202,6 @@ def process_is_it_table_item(table_data: Dict, tables_dict: Dict) -> Dict:
     else:
         table_data = remove_pk_from_columns(table_data)
 
-    if table_data.get("unique"):
-        table_data = add_unique_columns(table_data)
-
     for column in table_data["columns"]:
         if column["name"] in table_data["primary_key"]:
             column["nullable"] = False
@@ -248,19 +235,6 @@ def set_column_unique_param(table_data: Dict, key: str) -> Dict:
             check_in = table_data[key]
         if column["name"] in check_in:
             column["unique"] = True
-    return table_data
-
-
-def set_unique_columns(table_data: Dict) -> Dict:
-
-    unique_keys = ["unique_statement", "constraints"]
-
-    for key in unique_keys:
-        if table_data.get(key, None):
-            # get column names from unique constraints & statements
-            table_data = set_column_unique_param(table_data, key)
-    if "unique_statement" in table_data:
-        del table_data["unique_statement"]
     return table_data
 
 
@@ -300,14 +274,6 @@ def group_by_type_result(final_result: List[Dict]) -> Dict[str, List]:
     if result_as_dict["comments"] == []:
         del result_as_dict["comments"]
     return result_as_dict
-
-
-def add_unique_columns(table_data: Dict) -> Dict:
-    for column in table_data["columns"]:
-        if column["name"] in table_data["unique"]:
-            column["unique"] = True
-    del table_data["unique"]
-    return table_data
 
 
 def remove_pk_from_columns(table_data: Dict) -> Dict:

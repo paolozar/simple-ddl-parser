@@ -1484,7 +1484,7 @@ def test_alter_table_only():
                         "references": None,
                         "size": 50,
                         "type": "character varying",
-                        "unique": True,
+                        "unique": False,
                     },
                     {
                         "check": None,
@@ -1589,7 +1589,7 @@ def test_alter_table_if_exists():
                         "references": None,
                         "size": 50,
                         "type": "character varying",
-                        "unique": True,
+                        "unique": False,
                     },
                     {
                         "check": None,

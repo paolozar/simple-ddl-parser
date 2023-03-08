@@ -798,6 +798,16 @@ class BaseSQL(
         p[0]["checks"].append(check)
         return p[0]
 
+    def p_expression_unique(self, p: List) -> None:
+        """expr : expr COMMA uniq
+        """
+        p[0] = p[1] or defaultdict(list)
+        p_list = remove_par(list(p))
+        if not p[0].get("uniques"):
+            p[0]["uniques"] = []
+        p[0]["uniques"].append({"columns": p_list[-1]["unique_statement"]})
+        del p_list[-1]["unique_statement"]
+
     def p_expression_table(self, p: List) -> None:  # noqa R701
         """expr : table_name defcolumn
         | table_name LP defcolumn
@@ -808,7 +818,6 @@ class BaseSQL(
         | expr COMMA check_ex
         | expr COMMA foreign
         | expr COMMA pkey
-        | expr COMMA uniq
         | expr COMMA statem_by_id
         | expr COMMA constraint uniq
         | expr COMMA period_for
@@ -851,6 +860,7 @@ class BaseSQL(
                 {"columns": p_list[-1]["unique_statement"]},
                 p_list[-2]["constraint"]["name"],
             )
+            del data["unique_statement"]
         else:
             constraint = {"columns": p_list[-1]["primary_key"]}
             if (p_list[-1].get("detailed_columns")):

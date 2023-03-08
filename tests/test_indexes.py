@@ -85,7 +85,7 @@ def test_several_indexes_types():
                         "references": None,
                         "size": None,
                         "type": "BIGINT",
-                        "unique": True,
+                        "unique": False,
                     },
                     {
                         "check": None,
@@ -425,7 +425,7 @@ def test_clustered_index():
                         "references": None,
                         "size": None,
                         "type": "BIGINT",
-                        "unique": True,
+                        "unique": False,
                     },
                     {
                         "check": None,

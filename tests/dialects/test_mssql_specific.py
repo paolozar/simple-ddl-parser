@@ -224,7 +224,7 @@ def test_constraint_unique():
                         "references": None,
                         "size": None,
                         "type": "BIGINT",
-                        "unique": True,
+                        "unique": False,
                     },
                     {
                         "check": None,
@@ -234,7 +234,7 @@ def test_constraint_unique():
                         "references": None,
                         "size": 8000,
                         "type": "VARBINARY",
-                        "unique": True,
+                        "unique": False,
                     },
                 ],
                 "index": [],
@@ -406,7 +406,7 @@ def test_two_unique_constructs():
                         "references": None,
                         "size": None,
                         "type": "BIGINT",
-                        "unique": True,
+                        "unique": False,
                     },
                     {
                         "check": None,
@@ -483,7 +483,7 @@ def test_two_unique_constructs():
                         "references": None,
                         "size": 8000,
                         "type": "VARBINARY",
-                        "unique": True,
+                        "unique": False,
                     },
                     {
                         "check": None,
@@ -801,7 +801,7 @@ def test_foreign_keys():
                         "references": None,
                         "size": None,
                         "type": "BIGINT",
-                        "unique": True,
+                        "unique": False,
                     },
                     {
                         "check": None,
@@ -885,7 +885,7 @@ def test_foreign_keys():
                         "references": None,
                         "size": 8000,
                         "type": "VARBINARY",
-                        "unique": True,
+                        "unique": False,
                     },
                     {
                         "check": None,
@@ -1163,7 +1163,7 @@ def test_alter_unique():
                         "references": None,
                         "size": None,
                         "type": "BIGINT",
-                        "unique": True,
+                        "unique": False,
                     },
                     {
                         "check": None,
@@ -1240,7 +1240,7 @@ def test_alter_unique():
                         "references": None,
                         "size": 8000,
                         "type": "VARBINARY",
-                        "unique": True,
+                        "unique": False,
                     },
                     {
                         "check": None,
@@ -1310,7 +1310,7 @@ def test_alter_unique():
                         "references": None,
                         "size": (38, 20),
                         "type": "DECIMAL",
-                        "unique": True,
+                        "unique": False,
                     },
                     {
                         "check": None,
@@ -1330,7 +1330,7 @@ def test_alter_unique():
                         "references": None,
                         "size": None,
                         "type": "DATE",
-                        "unique": True,
+                        "unique": False,
                     },
                     {
                         "check": None,
@@ -1370,7 +1370,7 @@ def test_alter_unique():
                         "references": None,
                         "size": 7,
                         "type": "DATETIME2",
-                        "unique": True,
+                        "unique": False,
                     },
                     {
                         "check": None,
@@ -1554,7 +1554,7 @@ def test_defaults_in_alter():
                         "references": None,
                         "size": None,
                         "type": "BIGINT",
-                        "unique": True,
+                        "unique": False,
                     },
                     {
                         "check": None,

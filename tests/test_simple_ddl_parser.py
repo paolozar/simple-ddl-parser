@@ -376,7 +376,7 @@ def test_unique_statement_separate_line():
                     "type": "int",
                     "size": None,
                     "references": None,
-                    "unique": True,
+                    "unique": False,
                     "nullable": True,
                     "default": None,
                     "check": None,
@@ -386,7 +386,7 @@ def test_unique_statement_separate_line():
                     "type": "varchar",
                     "size": None,
                     "references": None,
-                    "unique": True,
+                    "unique": False,
                     "nullable": True,
                     "default": None,
                     "check": None,
@@ -430,6 +430,9 @@ def test_unique_statement_separate_line():
             "tablespace": None,
             "schema": None,
             "partitioned_by": [],
+            "uniques": [
+                {'columns': ['"id"', '"title"']}
+            ],
         }
     ]
 
