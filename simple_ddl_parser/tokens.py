@@ -55,6 +55,7 @@ first_liners = {
     "FOREIGN": "FOREIGN",
     "PRIMARY": "PRIMARY",
     "UNIQUE": "UNIQUE",
+    "INDEX": "INDEX",
     "CHECK": "CHECK",
     "WITH": "WITH",
 }

@@ -808,6 +808,16 @@ class BaseSQL(
         p[0]["uniques"].append({"columns": p_list[-1]["unique_statement"]})
         del p_list[-1]["unique_statement"]
 
+    def p_expression_inline_index(self, p: List) -> None:
+        """expr : expr COMMA inline_index
+        """
+        p[0] = p[1] or defaultdict(list)
+        p_list = remove_par(list(p))
+        if not p[0].get("inline_index"):
+            p[0]["inline_index"] = []
+        p[0]["inline_index"].append(p_list[-1]["index_statement"])
+        del p_list[-1]["index_statement"]
+
     def p_expression_table(self, p: List) -> None:  # noqa R701
         """expr : table_name defcolumn
         | table_name LP defcolumn
@@ -1518,6 +1528,27 @@ class BaseSQL(
         """uniq : UNIQUE LP pid RP"""
         p_list = remove_par(list(p))
         p[0] = {"unique_statement": p_list[-1]}
+
+    def p_inline_index(self, p: List) -> None:
+        """inline_index : INDEX LP pid RP"""
+        p_list = remove_par(list(p))
+        columns = []
+        columns_detailed = []
+        order = None
+        column = None
+        for item in p_list[-1]:
+            if item.upper() not in ["ASC", "DESC"]:
+                column = item
+                columns.append(column)
+            else:
+                order = item
+            if column and order:
+                columns_detailed.append({"column": column, "order": order})
+                column = None
+                order = None
+        p[0] = {"index_statement": {"columns": columns}}
+        if len(columns_detailed) > 0:
+            p[0]["index_statement"].update({"detailed_columns": columns_detailed})
 
     def p_statem_by_id(self, p: List) -> None:
         """statem_by_id : id LP pid RP

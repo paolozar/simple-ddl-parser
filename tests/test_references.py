@@ -451,6 +451,7 @@ def test_foreigen_keys():
                             'type': 'varchar',
                             'unique': False}],
                 'index': [],
+                'inline_index': [{'columns': ['timeperiod_id']}],
                 'partitioned_by': [],
                 'primary_key': ['exception_id'],
                 'schema': None,
