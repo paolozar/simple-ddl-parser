@@ -1020,6 +1020,11 @@ def test_inline_index():
            fld2 int,
            INDEX (fld1, fld2)
     );
+
+    CREATE TABLE testtbl5 (
+           fld1 int,
+           INDEX testtbl5_idx (fld1)
+    );
     """
     ).run()
     expected = [
@@ -1147,6 +1152,30 @@ def test_inline_index():
                                 'fld2']
                 }
             ]
-        }]
+        },
+        {
+            'table_name': 'testtbl5',
+            'schema': None,
+            'partitioned_by': [],
+            'tablespace': None,
+            'columns': [
+                {
+                    'name': 'fld1',
+                    'type': 'int',
+                    'size': None,
+                    'references': None,
+                    'unique': False,
+                    'nullable': True,
+                    'default': None,
+                    'check': None
+                }
+            ],
+            'primary_key': [],
+            'alter': {},
+            'checks': [],
+            'index': [],
+            'inline_index': [{'columns': ['fld1'], 'name': 'testtbl5_idx'}]
+        }
+    ]
     assert expected == parse_results
 

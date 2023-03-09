@@ -1530,7 +1530,9 @@ class BaseSQL(
         p[0] = {"unique_statement": p_list[-1]}
 
     def p_inline_index(self, p: List) -> None:
-        """inline_index : INDEX LP pid RP"""
+        """inline_index : INDEX LP pid RP
+        | INDEX id LP pid RP
+        """
         p_list = remove_par(list(p))
         columns = []
         columns_detailed = []
@@ -1547,6 +1549,10 @@ class BaseSQL(
                 column = None
                 order = None
         p[0] = {"index_statement": {"columns": columns}}
+
+        if isinstance(p_list[2], str):
+            p[0]["index_statement"].update({"name": p_list[2]})
+
         if len(columns_detailed) > 0:
             p[0]["index_statement"].update({"detailed_columns": columns_detailed})
 
