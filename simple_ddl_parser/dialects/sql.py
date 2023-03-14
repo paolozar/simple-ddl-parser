@@ -1317,8 +1317,27 @@ class BaseSQL(
         """
 
         p_list = remove_par(list(p))
+        columns = []
+        columns_detailed = []
+        order = None
+        column = None
+        for item in p_list[-1]:
+            if item.upper() not in ["ASC", "DESC"]:
+                column = item
+                columns.append(column)
+            else:
+                order = item
+            if column and order:
+                columns_detailed.append({"column": column, "order": order})
+                column = None
+                order = None
+
         p[0] = p[1]
-        p[0]["primary_key"] = {"constraint_name": None, "columns": p_list[-1]}
+        p[0]["primary_key"] = {"constraint_name": None, "columns": columns}
+
+        if len(columns_detailed) > 0:
+            p[0]["primary_key"].update({"detailed_columns": columns_detailed})
+
         if "constraint" in p[2]:
             p[0]["primary_key"]["constraint_name"] = p[2]["constraint"]["name"]
 

@@ -1705,6 +1705,106 @@ def test_alter_table_primary_key():
     result = DDLParser(ddl, silent=False, normalize_names=True).run(group_by_type=True)
     assert expected == result
 
+def test_alter_table_primary_key2():
+    ddl = """
+    CREATE TABLE testtbl1 (
+        fld1 int,
+        fld2 int
+    );
+    ALTER TABLE testtbl1 ADD PRIMARY KEY (fld1, fld2);
+
+    CREATE TABLE testtbl2 (
+        fld1 int,
+        fld2 int
+    );
+    ALTER TABLE testtbl2 ADD PRIMARY KEY (fld1 DESC, fld2 ASC);
+    """
+    result = DDLParser(ddl, silent=False, normalize_names=True).run(group_by_type=False)
+    expected = [
+        {
+            'table_name': 'testtbl1',
+            'schema': None,
+            'partitioned_by': [],
+            'tablespace': None,
+            'columns': [
+                {
+                    'name': 'fld1',
+                    'type': 'int',
+                    'size': None,
+                    'references': None,
+                    'unique': False,
+                    'nullable': True,
+                    'default': None,
+                    'check': None
+                },
+                {
+                    'name': 'fld2',
+                    'type': 'int',
+                    'size': None,
+                    'references': None,
+                    'unique': False,
+                    'nullable': True,
+                    'default': None,
+                    'check': None
+                }
+            ],
+            'primary_key': [],
+            'alter': {
+                'primary_keys': [
+                    {
+                        'constraint_name': None,
+                        'columns': ['fld1','fld2']
+                    }
+                ]
+            },
+            'checks': [],
+            'index': []
+        },
+        {
+            'table_name': 'testtbl2',
+            'schema': None,
+            'partitioned_by': [],
+            'tablespace': None,
+            'columns': [
+                {
+                    'name': 'fld1',
+                    'type': 'int',
+                    'size': None,
+                    'references': None,
+                    'unique': False,
+                    'nullable': True,
+                    'default': None,
+                    'check': None
+                },
+                {
+                    'name': 'fld2',
+                    'type': 'int',
+                    'size': None,
+                    'references': None,
+                    'unique': False,
+                    'nullable': True,
+                    'default': None,
+                    'check': None
+                }
+            ],
+            'primary_key': [],
+            'alter': {
+                'primary_keys': [
+                    {
+                        'constraint_name': None,
+                        'columns': ['fld1','fld2'],
+                        'detailed_columns': [
+                            {'column': 'fld1',
+                             'order': 'DESC'},
+                            {'column': 'fld2',
+                             'order': 'ASC'}]
+                    }
+                ]
+            },
+            'checks': [],
+            'index': []}]
+    assert expected == result
+    
 
 def test_alter_using():
 
